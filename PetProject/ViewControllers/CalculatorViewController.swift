@@ -15,33 +15,39 @@ final class CalculatorViewController: UIViewController {
         result.layer.cornerRadius = 25
         result.clipsToBounds = true
         result.backgroundColor = .white
-        result.backgroundColor = .black
         return result
     }()
     
+    private let mainStack: UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.spacing = 10
+        return stack
+    }()
     
     private lazy var upperStackView: UIStackView = {
-        setupStackView(spacing: 5)
+        setupStackView(spacing: 10)
     }()
     
     private lazy var preUpperStackView: UIStackView = {
-        setupStackView(spacing: 5)
+        setupStackView(spacing: 10)
     }()
     
     private lazy var middleStackView: UIStackView = {
-        setupStackView(spacing: 5)
+        setupStackView(spacing: 10)
     }()
     
     private lazy var preMiddleStackView: UIStackView = {
-        setupStackView(spacing: 5)
+        setupStackView(spacing: 10)
     }()
     
     private lazy var zeroStack: UIStackView = {
-       setupStackView(spacing: 5)
+       setupStackView(spacing: 10)
     }()
     
     private lazy var lowStackView: UIStackView = {
-        setupStackView(spacing: 5)
+        setupStackView(spacing: 10)
     }()
     
     
@@ -141,45 +147,33 @@ override func viewDidLoad() {
     private func setupLayout() {
        // view.backgroundColor = .darkGray
         
-        [resultLabel, upperStackView, preUpperStackView, middleStackView, preMiddleStackView, zeroStack, lowStackView] .forEach { view.addSubview($0) }
-        [resetButton, negativeButton, percentButton, divideButton] .forEach {upperStackView.addArrangedSubview($0)}
-        [sevenButton, eightButton, nineButton, multiplyButton] .forEach {preUpperStackView.addArrangedSubview($0)}
-        [fourButton, fiveButton, sixButton, minusButton] .forEach {middleStackView.addArrangedSubview($0)}
-        [oneButton, twoButton, threeButton, plusButton] .forEach {preMiddleStackView.addArrangedSubview($0)}
-        [commaButton, equalButton] .forEach {lowStackView.addArrangedSubview($0)}
-        [zeroButton] .forEach {zeroStack.addArrangedSubview($0)}
+        [mainStack] .forEach { view.addSubview($0) }
+        [resultLabel, upperStackView, preUpperStackView, middleStackView, preMiddleStackView, lowStackView] .forEach { mainStack.addArrangedSubview($0) }
+        [resetButton, negativeButton, percentButton, divideButton] .forEach { upperStackView.addArrangedSubview($0) }
+        [sevenButton, eightButton, nineButton, multiplyButton] .forEach { preUpperStackView.addArrangedSubview($0) }
+        [fourButton, fiveButton, sixButton, minusButton] .forEach { middleStackView.addArrangedSubview($0) }
+        [oneButton, twoButton, threeButton, plusButton] .forEach { preMiddleStackView.addArrangedSubview($0) }
+        [zeroButton, commaButton, equalButton] .forEach { lowStackView.addArrangedSubview($0) }
+      //  [zeroButton] .forEach { zeroStack.addArrangedSubview($0) }
         NSLayoutConstraint.activate([
-            resultLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-         //   resultLabel.heightAnchor.constraint(equalToConstant: 300),
-            resultLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            resultLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            resultLabel.bottomAnchor.constraint(equalTo: upperStackView.topAnchor),
+          //  resultLabel.heightAnchor.constraint(equalToConstant: 300),
             
+            mainStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            mainStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            mainStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
-            upperStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            upperStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+//            upperStackView.heightAnchor.constraint(equalToConstant: 70),
+//            upperStackView.widthAnchor.constraint(equalToConstant: 70),
+//         
+//            preUpperStackView.heightAnchor.constraint(equalToConstant: 70),
+//
+//            middleStackView.heightAnchor.constraint(equalToConstant: 70),
+//
+//            preMiddleStackView.heightAnchor.constraint(equalToConstant: 70),
+//
+//            lowStackView.heightAnchor.constraint(equalToConstant: 70),
             
-            preUpperStackView.topAnchor.constraint(equalTo: upperStackView.bottomAnchor, constant: 5),
-            preUpperStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            preUpperStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            
-            middleStackView.topAnchor.constraint(equalTo: preUpperStackView.bottomAnchor, constant: 5),
-            middleStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            middleStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            
-            preMiddleStackView.topAnchor.constraint(equalTo: middleStackView.bottomAnchor, constant: 5),
-            preMiddleStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            preMiddleStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            
-            zeroStack.topAnchor.constraint(equalTo: preMiddleStackView.bottomAnchor, constant: 5),
-            zeroStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            zeroStack.trailingAnchor.constraint(equalTo: lowStackView.leadingAnchor, constant: -5),
-            zeroStack.widthAnchor.constraint(equalToConstant: 195),
-            zeroStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            lowStackView.topAnchor.constraint(equalTo: preMiddleStackView.bottomAnchor, constant: 5),
-            lowStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            lowStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
 }
@@ -201,8 +195,8 @@ extension CalculatorViewController {
 extension CalculatorViewController {
     private func setupButton(title: String?) -> UIButton {
         let button = UIButton()
-       // button.layer.cornerRadius = button.frame.size.width / 2
-       // button.clipsToBounds = true
+        button.layer.cornerRadius = 35
+        button.clipsToBounds = true
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 50, weight: .medium)
         button.backgroundColor = .orange
