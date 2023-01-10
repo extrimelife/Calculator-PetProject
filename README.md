@@ -1,2 +1,2 @@
-#Calculator 
-![photo](image/image.png) 
+# Calculator 
+![photo](imgage/image.png) 
