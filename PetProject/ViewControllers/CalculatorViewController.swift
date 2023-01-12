@@ -9,6 +9,8 @@ import UIKit
 
 final class CalculatorViewController: UIViewController {
     
+    //MARK: - Private properties
+    
     private let resultLabel: UILabel = {
         let result = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -53,65 +55,73 @@ final class CalculatorViewController: UIViewController {
     
     private lazy var lowStackView: UIStackView = {
         setupStackView(spacing: 20)
-        
     }()
     
-    
     private lazy var zeroButton: UIButton = {
-        setupButton(title: "0")
+        let zeroButton = setupButton(title: "0")
+        zeroButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
+        return zeroButton
     }()
     
     private lazy var oneButton: UIButton = {
-        setupButton(title: "1")
+        let oneButton = setupButton(title: "1")
+        oneButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
+        return oneButton
     }()
-    
     
     private lazy var twoButton: UIButton = {
-        setupButton(title: "2")
+        let twoButton = setupButton(title: "2")
+        twoButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
+        return twoButton
     }()
-    
     
     private lazy var threeButton: UIButton = {
-        setupButton(title: "3")
+        let threeButton = setupButton(title: "3")
+        threeButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
+        return threeButton
     }()
-    
     
     private lazy var fourButton: UIButton = {
-        setupButton(title: "4")
+        let fourButton = setupButton(title: "4")
+        fourButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
+        return fourButton
     }()
-    
     
     private lazy var fiveButton: UIButton = {
-        setupButton(title: "5")
+        let fiveButton = setupButton(title: "5")
+        fiveButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
+        return fiveButton
     }()
-    
     
     private lazy var sixButton: UIButton = {
-        setupButton(title: "6")
+        let sixButton = setupButton(title: "6")
+        sixButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
+        return sixButton
     }()
-    
     
     private lazy var sevenButton: UIButton = {
-        setupButton(title: "7")
+        let sevenButton = setupButton(title: "7")
+        sevenButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
+        return sevenButton
     }()
-    
     
     private lazy var eightButton: UIButton = {
-        setupButton(title: "8")
+        let eightButton = setupButton(title: "8")
+        eightButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
+        return eightButton
     }()
-    
     
     private lazy var nineButton: UIButton = {
-        setupButton(title: "9")
+        let nineButton = setupButton(title: "9")
+        nineButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
+        return nineButton
     }()
-    
     
     private lazy var resetButton: UIButton = {
         let resetButton = setupButton(title: "C")
         resetButton.addTarget(self, action: #selector(resetTap), for: .touchUpInside)
         return resetButton
     }()
-    
     
     private lazy var negativeButton: UIButton = {
         setupButton(title: "⁺∕₋")
@@ -145,12 +155,16 @@ final class CalculatorViewController: UIViewController {
         setupButton(title: ",")
     }()
     
+    //MARK: - Override methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
     }
     
-    @objc private func buttonTap(sender: UIButton) {
+    //MARK: - Private methods
+    
+    @objc private func numberPressed(sender: UIButton) {
         resultLabel.text = sender.currentTitle
         sender.getAnimation()
     }
@@ -183,7 +197,7 @@ final class CalculatorViewController: UIViewController {
     }
 }
 
-//MARK: - SetupStackView
+//MARK: - Extentions
 
 extension CalculatorViewController {
     private func setupStackView(spacing: CGFloat) -> UIStackView {
@@ -196,7 +210,6 @@ extension CalculatorViewController {
     }
 }
 
-
 extension CalculatorViewController {
     private func setupButton(title: String?) -> UIButton {
         let button = UIButton()
@@ -205,7 +218,6 @@ extension CalculatorViewController {
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 50, weight: .medium)
         button.backgroundColor = .orange
-        button.addTarget(self, action: #selector(buttonTap), for: .touchUpInside)
         return button
     }
 }
