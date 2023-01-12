@@ -165,8 +165,11 @@ final class CalculatorViewController: UIViewController {
     //MARK: - Private methods
     
     @objc private func numberPressed(sender: UIButton) {
-        resultLabel.text = sender.currentTitle
-        sender.getAnimation()
+        guard let number = sender.currentTitle else { return }
+        
+            resultLabel.text = resultLabel.text ?? "" + number
+            sender.getAnimation()
+        
     }
     
     @objc private func resetTap(sender: UIButton) {
