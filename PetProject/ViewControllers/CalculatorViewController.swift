@@ -12,6 +12,7 @@ final class CalculatorViewController: UIViewController {
     private let resultLabel: UILabel = {
         let result = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "0"
         result.textAlignment = .right
         result.textColor = .white
         result.font = UIFont.systemFont(ofSize: 80, weight: .light)
@@ -27,31 +28,31 @@ final class CalculatorViewController: UIViewController {
     }()
     
     private lazy var upperStackView: UIStackView = {
-        setupStackView(spacing: 10)
+        setupStackView(spacing: 20)
     }()
     
     private lazy var preUpperStackView: UIStackView = {
-        setupStackView(spacing: 10)
+        setupStackView(spacing: 20)
     }()
     
     private lazy var middleStackView: UIStackView = {
-        setupStackView(spacing: 10)
+        setupStackView(spacing: 20)
     }()
     
     private lazy var preMiddleStackView: UIStackView = {
-        setupStackView(spacing: 10)
+        setupStackView(spacing: 20)
     }()
     
     private lazy var zeroStack: UIStackView = {
-        setupStackView(spacing: 10)
+        setupStackView(spacing: 20)
+    }()
+    
+    private lazy var commaEqualStackView: UIStackView = {
+        setupStackView(spacing: 20)
     }()
     
     private lazy var lowStackView: UIStackView = {
-        setupStackView(spacing: 10)
-    }()
-    
-    private lazy var moreStack: UIStackView = {
-        setupStackView(spacing: 10)
+        setupStackView(spacing: 20)
         
     }()
     
@@ -106,12 +107,14 @@ final class CalculatorViewController: UIViewController {
     
     
     private lazy var resetButton: UIButton = {
-        setupButton(title: "C")
+        let resetButton = setupButton(title: "C")
+        resetButton.addTarget(self, action: #selector(resetTap), for: .touchUpInside)
+        return resetButton
     }()
     
     
     private lazy var negativeButton: UIButton = {
-        setupButton(title: "±")
+        setupButton(title: "⁺∕₋")
     }()
     
     private lazy var percentButton: UIButton = {
@@ -119,11 +122,11 @@ final class CalculatorViewController: UIViewController {
     }()
     
     private lazy var divideButton: UIButton = {
-        setupButton(title: "/")
+        setupButton(title: "÷")
     }()
     
     private lazy var multiplyButton: UIButton = {
-        setupButton(title: "*")
+        setupButton(title: "×")
     }()
     
     private lazy var minusButton: UIButton = {
@@ -142,8 +145,6 @@ final class CalculatorViewController: UIViewController {
         setupButton(title: ",")
     }()
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
@@ -151,29 +152,31 @@ final class CalculatorViewController: UIViewController {
     
     @objc private func buttonTap(sender: UIButton) {
         resultLabel.text = sender.currentTitle
-        sender.shine()
+        sender.getAnimation()
+    }
+    
+    @objc private func resetTap(sender: UIButton) {
+        resultLabel.text = "0"
     }
     
     private func setupLayout() {
-       
         [mainStack] .forEach { view.addSubview($0) }
-        [resultLabel, upperStackView, preUpperStackView, middleStackView, preMiddleStackView, moreStack] .forEach { mainStack.addArrangedSubview($0) }
+        [resultLabel, upperStackView, preUpperStackView, middleStackView, preMiddleStackView, lowStackView] .forEach { mainStack.addArrangedSubview($0) }
         [resetButton, negativeButton, percentButton, divideButton] .forEach { upperStackView.addArrangedSubview($0) }
         [sevenButton, eightButton, nineButton, multiplyButton] .forEach { preUpperStackView.addArrangedSubview($0) }
         [fourButton, fiveButton, sixButton, minusButton] .forEach { middleStackView.addArrangedSubview($0) }
         [oneButton, twoButton, threeButton, plusButton] .forEach { preMiddleStackView.addArrangedSubview($0) }
         [zeroButton] .forEach { zeroStack.addArrangedSubview($0) }
-        [commaButton, equalButton] .forEach { lowStackView.addArrangedSubview($0) }
-        [zeroStack, lowStackView] . forEach { moreStack.addArrangedSubview($0)}
+        [commaButton, equalButton] .forEach { commaEqualStackView.addArrangedSubview($0) }
+        [zeroStack, commaEqualStackView] . forEach { lowStackView.addArrangedSubview($0)}
         NSLayoutConstraint.activate([
-
+            
             resultLabel.heightAnchor.constraint(equalToConstant: 100),
             
             mainStack.topAnchor.constraint(equalTo: resultLabel.bottomAnchor, constant: 10),
-            mainStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            mainStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             mainStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             mainStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-
             
             zeroStack.widthAnchor.constraint(equalToConstant: 200),
         ])

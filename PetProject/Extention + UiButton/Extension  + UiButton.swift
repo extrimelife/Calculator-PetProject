@@ -9,7 +9,7 @@ import UIKit
 
 extension UIButton {
     
-    func shine() {
+    func getAnimation() {
         UIView.animate(withDuration: 0.2, animations: {
             self.alpha = 0.5
         }) { _ in

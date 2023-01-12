@@ -57,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				B715148229622FAF00002EBC /* ViewControllers */,
+				B776166D296D1F3500C0B222 /* Extention + UiButton */,
 				B715148129622FA700002EBC /* App */,
 				B715147629622E4F00002EBC /* Assets.xcassets */,
 				B715147829622E4F00002EBC /* LaunchScreen.storyboard */,
@@ -78,9 +79,16 @@
 			isa = PBXGroup;
 			children = (
 				B715147129622E4D00002EBC /* CalculatorViewController.swift */,
-				B776166B296CF94200C0B222 /* Extension  + UiButton.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		B776166D296D1F3500C0B222 /* Extention + UiButton */ = {
+			isa = PBXGroup;
+			children = (
+				B776166B296CF94200C0B222 /* Extension  + UiButton.swift */,
+			);
+			path = "Extention + UiButton";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
