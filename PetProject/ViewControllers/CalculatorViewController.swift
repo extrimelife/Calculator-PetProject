@@ -16,6 +16,10 @@ final class CalculatorViewController: UIViewController {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "0"
         result.textAlignment = .right
+        result.adjustsFontSizeToFitWidth = true
+        result.minimumScaleFactor = 0.8
+        result.lineBreakMode = .byWordWrapping
+        result.sizeToFit()
         result.textColor = .white
         result.font = UIFont.systemFont(ofSize: 80, weight: .light)
         return result
@@ -165,10 +169,10 @@ final class CalculatorViewController: UIViewController {
     //MARK: - Private methods
     
     @objc private func numberPressed(sender: UIButton) {
-        guard let number = sender.currentTitle else { return }
+        let number = sender.currentTitle
+            resultLabel.text = resultLabel.text! + number!
+                sender.getAnimation()
         
-            resultLabel.text = resultLabel.text ?? "" + number
-            sender.getAnimation()
         
     }
     
@@ -190,6 +194,7 @@ final class CalculatorViewController: UIViewController {
             
             resultLabel.heightAnchor.constraint(equalToConstant: 100),
             
+
             mainStack.topAnchor.constraint(equalTo: resultLabel.bottomAnchor, constant: 10),
             mainStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             mainStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
