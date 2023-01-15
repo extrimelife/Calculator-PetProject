@@ -11,6 +11,8 @@ final class CalculatorViewController: UIViewController {
     
     //MARK: - Private properties
     
+    private var stillTyping = false
+    
     private let resultLabel: UILabel = {
         let result = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -19,7 +21,6 @@ final class CalculatorViewController: UIViewController {
         result.adjustsFontSizeToFitWidth = true
         result.minimumScaleFactor = 0.8
         result.lineBreakMode = .byWordWrapping
-        result.sizeToFit()
         result.textColor = .white
         result.font = UIFont.systemFont(ofSize: 80, weight: .light)
         return result
@@ -169,11 +170,14 @@ final class CalculatorViewController: UIViewController {
     //MARK: - Private methods
     
     @objc private func numberPressed(sender: UIButton) {
-        let number = sender.currentTitle
+       let number = sender.currentTitle
+        if stillTyping {
             resultLabel.text = resultLabel.text! + number!
-                sender.getAnimation()
-        
-        
+            sender.getAnimation()
+        } else {
+            resultLabel.text = number
+            stillTyping = true
+        }
     }
     
     @objc private func resetTap(sender: UIButton) {
@@ -194,9 +198,8 @@ final class CalculatorViewController: UIViewController {
             
             resultLabel.heightAnchor.constraint(equalToConstant: 100),
             
-
             mainStack.topAnchor.constraint(equalTo: resultLabel.bottomAnchor, constant: 10),
-            mainStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            mainStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             mainStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             mainStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
