@@ -12,6 +12,18 @@ final class CalculatorViewController: UIViewController {
     //MARK: - Private properties
     
     private var stillTyping = false
+    private var firstOperand: Double!
+    private var secondOperand: Double!
+    private var operationSign: String!
+    private var currentInput: Double {
+        get {
+            return Double(resultLabel.text!)!
+        }
+        set {
+            resultLabel.text = "\(newValue)"
+            stillTyping = false
+        }
+    }
     
     private let resultLabel: UILabel = {
         let result = UILabel()
@@ -19,7 +31,7 @@ final class CalculatorViewController: UIViewController {
         result.text = "0"
         result.textAlignment = .right
         result.adjustsFontSizeToFitWidth = true
-        result.minimumScaleFactor = 0.8
+        result.minimumScaleFactor = 0.5
         result.lineBreakMode = .byWordWrapping
         result.textColor = .white
         result.font = UIFont.systemFont(ofSize: 80, weight: .light)
@@ -30,36 +42,36 @@ final class CalculatorViewController: UIViewController {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
-        stack.spacing = 10
+        stack.spacing = 16
         return stack
     }()
     
     private lazy var upperStackView: UIStackView = {
-        setupStackView(spacing: 20)
+        setupStackView(spacing: 16)
     }()
     
     private lazy var preUpperStackView: UIStackView = {
-        setupStackView(spacing: 20)
+        setupStackView(spacing: 16)
     }()
     
     private lazy var middleStackView: UIStackView = {
-        setupStackView(spacing: 20)
+        setupStackView(spacing: 16)
     }()
     
     private lazy var preMiddleStackView: UIStackView = {
-        setupStackView(spacing: 20)
+        setupStackView(spacing: 16)
     }()
     
     private lazy var zeroStack: UIStackView = {
-        setupStackView(spacing: 20)
+        setupStackView(spacing: 16)
     }()
     
     private lazy var commaEqualStackView: UIStackView = {
-        setupStackView(spacing: 20)
+        setupStackView(spacing: 16)
     }()
     
     private lazy var lowStackView: UIStackView = {
-        setupStackView(spacing: 20)
+        setupStackView(spacing: 16)
     }()
     
     private lazy var zeroButton: UIButton = {
@@ -137,23 +149,33 @@ final class CalculatorViewController: UIViewController {
     }()
     
     private lazy var divideButton: UIButton = {
-        setupButton(title: "÷")
+        let divideButton = setupButton(title: "÷")
+        divideButton.addTarget(self, action: #selector(twoOperandsPressed), for: .touchUpInside)
+        return divideButton
     }()
     
     private lazy var multiplyButton: UIButton = {
-        setupButton(title: "×")
+        let multiplyButton = setupButton(title: "×")
+        multiplyButton.addTarget(self, action: #selector(twoOperandsPressed), for: .touchUpInside)
+        return multiplyButton
     }()
     
     private lazy var minusButton: UIButton = {
-        setupButton(title: "-")
+        let minusButton = setupButton(title: "-")
+        minusButton.addTarget(self, action: #selector(twoOperandsPressed), for: .touchUpInside)
+        return minusButton
     }()
     
     private lazy var plusButton: UIButton = {
-        setupButton(title: "+")
+        let plusButton = setupButton(title: "+")
+        plusButton.addTarget(self, action: #selector(twoOperandsPressed), for: .touchUpInside)
+        return plusButton
     }()
     
     private lazy var equalButton: UIButton = {
-        setupButton(title: "=")
+        let equalButton = setupButton(title: "=")
+        equalButton.addTarget(self, action: #selector(equalSignPressed), for: .touchUpInside)
+        return equalButton
     }()
     
     private lazy var commaButton: UIButton = {
@@ -170,18 +192,47 @@ final class CalculatorViewController: UIViewController {
     //MARK: - Private methods
     
     @objc private func numberPressed(sender: UIButton) {
-       let number = sender.currentTitle
         if stillTyping {
-            resultLabel.text = resultLabel.text! + number!
-            sender.getAnimation()
+            resultLabel.text = resultLabel.text! + sender.currentTitle!
         } else {
-            resultLabel.text = number
+            resultLabel.text = sender.currentTitle
             stillTyping = true
         }
+        sender.getAnimation()
+    }
+    
+    @objc private func twoOperandsPressed(sender: UIButton) {
+        operationSign = sender.currentTitle
+        firstOperand = currentInput
+        stillTyping = false
+        sender.getAnimation()
+    }
+    
+    @objc private func equalSignPressed(sender: UIButton) {
+        if stillTyping {
+            secondOperand = currentInput
+        }
+        switch operationSign {
+        case "÷" :
+            operateWithTwoOperands{$0 / $1}
+        case "×" :
+            operateWithTwoOperands{$0 * $1}
+        case "-" :
+            operateWithTwoOperands{$0 - $1}
+        case "+" :
+            operateWithTwoOperands{$0 + $1}
+        default: break
+        }
+        sender.getAnimation()
     }
     
     @objc private func resetTap(sender: UIButton) {
-        resultLabel.text = "0"
+        
+    }
+    
+    private func operateWithTwoOperands(operation: (Double, Double) -> Double) {
+        currentInput = operation(firstOperand, secondOperand)
+        stillTyping = false
     }
     
     private func setupLayout() {
