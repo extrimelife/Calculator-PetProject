@@ -15,6 +15,7 @@ final class CalculatorViewController: UIViewController {
     private var firstOperand: Double!
     private var secondOperand: Double!
     private var operationSign: String!
+    private let maxLength: Double = 9
     private var currentInput: Double {
         get {
             return Double(resultLabel.text!)!
@@ -192,10 +193,14 @@ final class CalculatorViewController: UIViewController {
     //MARK: - Private methods
     
     @objc private func numberPressed(sender: UIButton) {
+        guard let number = sender.currentTitle else { return }
+        guard let resultText = resultLabel.text else { return }
         if stillTyping {
-            resultLabel.text = resultLabel.text! + sender.currentTitle!
+            if resultText.count < 9 {
+                resultLabel.text = resultText + number
+            }
         } else {
-            resultLabel.text = sender.currentTitle
+            resultLabel.text = number
             stillTyping = true
         }
         sender.getAnimation()
@@ -207,6 +212,7 @@ final class CalculatorViewController: UIViewController {
         stillTyping = false
         sender.getAnimation()
     }
+    
     
     @objc private func equalSignPressed(sender: UIButton) {
         if stillTyping {
