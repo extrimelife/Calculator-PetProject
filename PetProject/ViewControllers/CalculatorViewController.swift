@@ -15,7 +15,7 @@ final class CalculatorViewController: UIViewController {
     private var firstOperand: Double!
     private var secondOperand: Double!
     private var operationSign: String!
-    private let maxLength: Double = 9
+    private let maxLength = 9
     private var currentInput: Double {
         get {
             return Double(resultLabel.text!)!
@@ -196,7 +196,7 @@ final class CalculatorViewController: UIViewController {
         guard let number = sender.currentTitle else { return }
         guard let resultText = resultLabel.text else { return }
         if stillTyping {
-            if resultText.count < 9 {
+            if resultText.count < maxLength {
                 resultLabel.text = resultText + number
             }
         } else {
@@ -233,7 +233,13 @@ final class CalculatorViewController: UIViewController {
     }
     
     @objc private func resetTap(sender: UIButton) {
-        
+        firstOperand = 0
+        secondOperand = 0
+        currentInput = 0
+        resultLabel.text = "0"
+        stillTyping = false
+        operationSign = ""
+        sender.getAnimation()
     }
     
     private func operateWithTwoOperands(operation: (Double, Double) -> Double) {
