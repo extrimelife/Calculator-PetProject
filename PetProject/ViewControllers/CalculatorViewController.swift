@@ -11,10 +11,10 @@ final class CalculatorViewController: UIViewController {
     
     //MARK: - Private properties
     
-    private var stillTyping = false
-    private var firstOperand: Double!
-    private var secondOperand: Double!
-    private var operationSign: String!
+    private var stillTyping: Bool = false
+    private var firstOperand: Double?
+    private var secondOperand: Double?
+    private var operationSign: String?
     private let maxLength = 9
     private var currentInput: Double {
         get {
@@ -117,16 +117,20 @@ final class CalculatorViewController: UIViewController {
     
     private lazy var resetButton: UIButton = {
         let resetButton = setupButton(title: "C")
-        resetButton.addTarget(self, action: #selector(resetTap), for: .touchUpInside)
+        resetButton.addTarget(self, action: #selector(resetButtonPressed), for: .touchUpInside)
         return resetButton
     }()
     
     private lazy var negativeButton: UIButton = {
-        setupButton(title: "⁺∕₋")
+        let negativeButton = setupButton(title: "⁺∕₋")
+        negativeButton.addTarget(self, action: #selector(negativeButtonPressed), for: .touchUpInside)
+        return negativeButton
     }()
     
     private lazy var percentButton: UIButton = {
-        setupButton(title: "%")
+        let percentButton = setupButton(title: "%")
+        percentButton.addTarget(self, action: #selector(percentButtonPressed), for: .touchUpInside)
+        return percentButton
     }()
     
     private lazy var divideButton: UIButton = {
@@ -147,12 +151,14 @@ final class CalculatorViewController: UIViewController {
     
     private lazy var equalButton: UIButton = {
         let equalButton = setupButton(title: "=")
-        equalButton.addTarget(self, action: #selector(equalSignPressed), for: .touchUpInside)
+        equalButton.addTarget(self, action: #selector(equalSignButtonPressed), for: .touchUpInside)
         return equalButton
     }()
     
     private lazy var commaButton: UIButton = {
-        setupButton(title: ",")
+       let commaButton = setupButton(title: ",")
+        commaButton.addTarget(self, action: #selector(commaButtonPressed), for: .touchUpInside)
+        return commaButton
     }()
     
     //MARK: - Override methods
@@ -166,10 +172,10 @@ final class CalculatorViewController: UIViewController {
     
     //MARK: - Private methods
     
-    @objc private func numberPressed(sender: UIButton) {
+    @objc private func numberButtonPressed(sender: UIButton) {
         guard let number = sender.currentTitle else { return }
         guard let resultText = resultLabel.text else { return }
-        if stillTyping {
+        if stillTyping && currentInput != 0 {
             if resultText.count < maxLength {
                 resultLabel.text = resultText + number
             }
@@ -180,7 +186,7 @@ final class CalculatorViewController: UIViewController {
         sender.getAnimation()
     }
     
-    @objc private func twoOperandsPressed(sender: UIButton) {
+    @objc private func twoOperandButtonPressed(sender: UIButton) {
         operationSign = sender.currentTitle
         firstOperand = currentInput
         stillTyping = false
@@ -188,7 +194,7 @@ final class CalculatorViewController: UIViewController {
     }
     
     
-    @objc private func equalSignPressed(sender: UIButton) {
+    @objc private func equalSignButtonPressed(sender: UIButton) {
         if stillTyping {
             secondOperand = currentInput
         }
@@ -206,7 +212,7 @@ final class CalculatorViewController: UIViewController {
         sender.getAnimation()
     }
     
-    @objc private func resetTap(sender: UIButton) {
+    @objc private func resetButtonPressed(sender: UIButton) {
         firstOperand = 0
         secondOperand = 0
         currentInput = 0
@@ -216,7 +222,22 @@ final class CalculatorViewController: UIViewController {
         sender.getAnimation()
     }
     
+    @objc private func negativeButtonPressed(sender: UIButton) {
+        currentInput = -currentInput
+        sender.getAnimation()
+    }
+    
+    @objc private func percentButtonPressed(sender: UIButton) {
+        
+    }
+    
+    @objc private func commaButtonPressed() {
+        
+    }
+    
     private func operateWithTwoOperands(operation: (Double, Double) -> Double) {
+        guard let firstOperand = firstOperand else { return }
+        guard let secondOperand = secondOperand else { return }
         currentInput = operation(firstOperand, secondOperand)
         stillTyping = false
     }
@@ -280,7 +301,7 @@ extension CalculatorViewController {
                              sixButton, sevenButton,
                              eightButton, nineButton]
         numberButtons.forEach { numberButton in
-            numberButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
+            numberButton.addTarget(self, action: #selector(numberButtonPressed), for: .touchUpInside)
         }
     }
     
@@ -288,7 +309,7 @@ extension CalculatorViewController {
         let operationButtons = [divideButton, multiplyButton,
                                 minusButton, plusButton]
         operationButtons.forEach { operationButton in
-            operationButton.addTarget(self, action: #selector(twoOperandsPressed), for: .touchUpInside)
+            operationButton.addTarget(self, action: #selector(twoOperandButtonPressed), for: .touchUpInside)
         }
     }
 }
