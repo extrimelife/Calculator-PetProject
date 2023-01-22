@@ -76,63 +76,43 @@ final class CalculatorViewController: UIViewController {
     }()
     
     private lazy var zeroButton: UIButton = {
-        let zeroButton = setupButton(title: "0")
-        zeroButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
-        return zeroButton
+        setupButton(title: "0")
     }()
     
     private lazy var oneButton: UIButton = {
-        let oneButton = setupButton(title: "1")
-        oneButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
-        return oneButton
+        setupButton(title: "1")
     }()
     
     private lazy var twoButton: UIButton = {
-        let twoButton = setupButton(title: "2")
-        twoButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
-        return twoButton
+        setupButton(title: "2")
     }()
     
     private lazy var threeButton: UIButton = {
-        let threeButton = setupButton(title: "3")
-        threeButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
-        return threeButton
+        setupButton(title: "3")
     }()
     
     private lazy var fourButton: UIButton = {
-        let fourButton = setupButton(title: "4")
-        fourButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
-        return fourButton
+        setupButton(title: "4")
     }()
     
     private lazy var fiveButton: UIButton = {
-        let fiveButton = setupButton(title: "5")
-        fiveButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
-        return fiveButton
+        setupButton(title: "5")
     }()
     
     private lazy var sixButton: UIButton = {
-        let sixButton = setupButton(title: "6")
-        sixButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
-        return sixButton
+        setupButton(title: "6")
     }()
     
     private lazy var sevenButton: UIButton = {
-        let sevenButton = setupButton(title: "7")
-        sevenButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
-        return sevenButton
+        setupButton(title: "7")
     }()
     
     private lazy var eightButton: UIButton = {
-        let eightButton = setupButton(title: "8")
-        eightButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
-        return eightButton
+        setupButton(title: "8")
     }()
     
     private lazy var nineButton: UIButton = {
-        let nineButton = setupButton(title: "9")
-        nineButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
-        return nineButton
+        setupButton(title: "9")
     }()
     
     private lazy var resetButton: UIButton = {
@@ -150,27 +130,19 @@ final class CalculatorViewController: UIViewController {
     }()
     
     private lazy var divideButton: UIButton = {
-        let divideButton = setupButton(title: "÷")
-        divideButton.addTarget(self, action: #selector(twoOperandsPressed), for: .touchUpInside)
-        return divideButton
+        setupButton(title: "÷")
     }()
     
     private lazy var multiplyButton: UIButton = {
-        let multiplyButton = setupButton(title: "×")
-        multiplyButton.addTarget(self, action: #selector(twoOperandsPressed), for: .touchUpInside)
-        return multiplyButton
+        setupButton(title: "×")
     }()
     
     private lazy var minusButton: UIButton = {
-        let minusButton = setupButton(title: "-")
-        minusButton.addTarget(self, action: #selector(twoOperandsPressed), for: .touchUpInside)
-        return minusButton
+        setupButton(title: "-")
     }()
     
     private lazy var plusButton: UIButton = {
-        let plusButton = setupButton(title: "+")
-        plusButton.addTarget(self, action: #selector(twoOperandsPressed), for: .touchUpInside)
-        return plusButton
+        setupButton(title: "+")
     }()
     
     private lazy var equalButton: UIButton = {
@@ -187,6 +159,8 @@ final class CalculatorViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        actionPressNumberButton()
+        actionPressOperationButton()
         setupLayout()
     }
     
@@ -249,11 +223,17 @@ final class CalculatorViewController: UIViewController {
     
     private func setupLayout() {
         [mainStack] .forEach { view.addSubview($0) }
-        [resultLabel, upperStackView, preUpperStackView, middleStackView, preMiddleStackView, lowStackView] .forEach { mainStack.addArrangedSubview($0) }
-        [resetButton, negativeButton, percentButton, divideButton] .forEach { upperStackView.addArrangedSubview($0) }
-        [sevenButton, eightButton, nineButton, multiplyButton] .forEach { preUpperStackView.addArrangedSubview($0) }
-        [fourButton, fiveButton, sixButton, minusButton] .forEach { middleStackView.addArrangedSubview($0) }
-        [oneButton, twoButton, threeButton, plusButton] .forEach { preMiddleStackView.addArrangedSubview($0) }
+        [resultLabel, upperStackView,
+         preUpperStackView, middleStackView,
+         preMiddleStackView, lowStackView] .forEach { mainStack.addArrangedSubview($0) }
+        [resetButton, negativeButton,
+         percentButton, divideButton] .forEach { upperStackView.addArrangedSubview($0) }
+        [sevenButton, eightButton,
+         nineButton, multiplyButton] .forEach { preUpperStackView.addArrangedSubview($0) }
+        [fourButton, fiveButton,
+         sixButton, minusButton] .forEach { middleStackView.addArrangedSubview($0) }
+        [oneButton, twoButton,
+         threeButton, plusButton] .forEach { preMiddleStackView.addArrangedSubview($0) }
         [zeroButton] .forEach { zeroStack.addArrangedSubview($0) }
         [commaButton, equalButton] .forEach { commaEqualStackView.addArrangedSubview($0) }
         [zeroStack, commaEqualStackView] . forEach { lowStackView.addArrangedSubview($0)}
@@ -282,9 +262,7 @@ extension CalculatorViewController {
         stackView.spacing = spacing
         return stackView
     }
-}
-
-extension CalculatorViewController {
+    
     private func setupButton(title: String?) -> UIButton {
         let button = UIButton()
         button.layer.cornerRadius = 35
@@ -294,4 +272,26 @@ extension CalculatorViewController {
         button.backgroundColor = .orange
         return button
     }
+    
+    private func actionPressNumberButton() {
+        let numberButtons = [zeroButton, oneButton,
+                             twoButton, threeButton,
+                             fourButton, fiveButton,
+                             sixButton, sevenButton,
+                             eightButton, nineButton]
+        numberButtons.forEach { numberButton in
+            numberButton.addTarget(self, action: #selector(numberPressed), for: .touchUpInside)
+        }
+    }
+    
+    private func actionPressOperationButton() {
+        let operationButtons = [divideButton, multiplyButton,
+                                minusButton, plusButton]
+        operationButtons.forEach { operationButton in
+            operationButton.addTarget(self, action: #selector(twoOperandsPressed), for: .touchUpInside)
+        }
+    }
 }
+
+
+
