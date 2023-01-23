@@ -11,9 +11,10 @@ final class CalculatorViewController: UIViewController {
     
     //MARK: - Private properties
     
-    private var stillTyping: Bool = false
-    private var firstOperand: Double?
-    private var secondOperand: Double?
+    private var isStillTyping = false
+    private var isCommaPlaced = false
+    private var firstOperand: Double = 0
+    private var secondOperand: Double = 0
     private var operationSign: String?
     private let maxLength = 9
     private var currentInput: Double {
@@ -21,8 +22,14 @@ final class CalculatorViewController: UIViewController {
             return Double(resultLabel.text!)!
         }
         set {
-            resultLabel.text = "\(newValue)"
-            stillTyping = false
+            let value = "\(newValue)"
+            let separatorArray = value.components(separatedBy: ".")
+            if separatorArray[1] == "0" {
+                resultLabel.text = "\(separatorArray[0])"
+            } else {
+                resultLabel.text = "\(newValue)"
+            }
+            isStillTyping = false
         }
     }
     
@@ -155,10 +162,10 @@ final class CalculatorViewController: UIViewController {
         return equalButton
     }()
     
-    private lazy var commaButton: UIButton = {
-       let commaButton = setupButton(title: ",")
-        commaButton.addTarget(self, action: #selector(commaButtonPressed), for: .touchUpInside)
-        return commaButton
+    private lazy var dotButton: UIButton = {
+        let dotButton = setupButton(title: ",")
+        dotButton.addTarget(self, action: #selector(dotButtonPressed), for: .touchUpInside)
+        return dotButton
     }()
     
     //MARK: - Override methods
@@ -175,13 +182,13 @@ final class CalculatorViewController: UIViewController {
     @objc private func numberButtonPressed(sender: UIButton) {
         guard let number = sender.currentTitle else { return }
         guard let resultText = resultLabel.text else { return }
-        if stillTyping && currentInput != 0 {
+        if isStillTyping && currentInput != 0 {
             if resultText.count < maxLength {
                 resultLabel.text = resultText + number
             }
         } else {
             resultLabel.text = number
-            stillTyping = true
+            isStillTyping = true
         }
         sender.getAnimation()
     }
@@ -189,13 +196,14 @@ final class CalculatorViewController: UIViewController {
     @objc private func twoOperandButtonPressed(sender: UIButton) {
         operationSign = sender.currentTitle
         firstOperand = currentInput
-        stillTyping = false
+        isStillTyping = false
+        isCommaPlaced = false
         sender.getAnimation()
     }
     
     
     @objc private func equalSignButtonPressed(sender: UIButton) {
-        if stillTyping {
+        if isStillTyping {
             secondOperand = currentInput
         }
         switch operationSign {
@@ -209,6 +217,7 @@ final class CalculatorViewController: UIViewController {
             operateWithTwoOperands{$0 + $1}
         default: break
         }
+        isCommaPlaced = false
         sender.getAnimation()
     }
     
@@ -217,7 +226,8 @@ final class CalculatorViewController: UIViewController {
         secondOperand = 0
         currentInput = 0
         resultLabel.text = "0"
-        stillTyping = false
+        isStillTyping = false
+        isCommaPlaced = false
         operationSign = ""
         sender.getAnimation()
     }
@@ -228,18 +238,31 @@ final class CalculatorViewController: UIViewController {
     }
     
     @objc private func percentButtonPressed(sender: UIButton) {
-        
+        if firstOperand == 0 {
+            currentInput = currentInput / 100
+        } else {
+            secondOperand = firstOperand * currentInput / 100
+            currentInput = secondOperand
+        }
+        isStillTyping = false
+        sender.getAnimation()
     }
     
-    @objc private func commaButtonPressed() {
-        
+    @objc private func dotButtonPressed(sender: UIButton) {
+        guard var dotResult = resultLabel.text else { return }
+        if isStillTyping && !isCommaPlaced {
+            resultLabel.text = dotResult + "."
+            isCommaPlaced = true
+        } else if !isStillTyping && !isCommaPlaced {
+            dotResult = "0."
+        }
+        sender.getAnimation()
     }
-    
+
+
     private func operateWithTwoOperands(operation: (Double, Double) -> Double) {
-        guard let firstOperand = firstOperand else { return }
-        guard let secondOperand = secondOperand else { return }
         currentInput = operation(firstOperand, secondOperand)
-        stillTyping = false
+        isStillTyping = false
     }
     
     private func setupLayout() {
@@ -256,7 +279,7 @@ final class CalculatorViewController: UIViewController {
         [oneButton, twoButton,
          threeButton, plusButton] .forEach { preMiddleStackView.addArrangedSubview($0) }
         [zeroButton] .forEach { zeroStack.addArrangedSubview($0) }
-        [commaButton, equalButton] .forEach { commaEqualStackView.addArrangedSubview($0) }
+        [dotButton, equalButton] .forEach { commaEqualStackView.addArrangedSubview($0) }
         [zeroStack, commaEqualStackView] . forEach { lowStackView.addArrangedSubview($0)}
         NSLayoutConstraint.activate([
             
@@ -310,6 +333,7 @@ extension CalculatorViewController {
                                 minusButton, plusButton]
         operationButtons.forEach { operationButton in
             operationButton.addTarget(self, action: #selector(twoOperandButtonPressed), for: .touchUpInside)
+            
         }
     }
 }
