@@ -141,7 +141,7 @@ final class CalculatorViewController: UIViewController {
     }()
     
     private lazy var divideButton: UIButton = {
-        setupButton(title: "÷")
+       setupButton(title: "÷")
     }()
     
     private lazy var multiplyButton: UIButton = {
@@ -163,7 +163,7 @@ final class CalculatorViewController: UIViewController {
     }()
     
     private lazy var dotButton: UIButton = {
-        let dotButton = setupButton(title: ",")
+        let dotButton = setupButton(title: ".")
         dotButton.addTarget(self, action: #selector(dotButtonPressed), for: .touchUpInside)
         return dotButton
     }()
@@ -309,6 +309,7 @@ extension CalculatorViewController {
     
     private func setupButton(title: String?) -> UIButton {
         let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 35
         button.clipsToBounds = true
         button.setTitle(title, for: .normal)
@@ -333,7 +334,7 @@ extension CalculatorViewController {
                                 minusButton, plusButton]
         operationButtons.forEach { operationButton in
             operationButton.addTarget(self, action: #selector(twoOperandButtonPressed), for: .touchUpInside)
-            
+            operationButton.addTarget(self, action: #selector(equalSignButtonPressed), for: .touchDown)
         }
     }
 }
