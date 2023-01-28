@@ -50,36 +50,37 @@ final class CalculatorViewController: UIViewController {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
-        stack.spacing = 16
+        stack.distribution = .fillEqually
+        stack.spacing = 10
         return stack
     }()
     
     private lazy var upperStackView: UIStackView = {
-        setupStackView(spacing: 16)
+        setupStackView(spacing: 10)
     }()
     
     private lazy var preUpperStackView: UIStackView = {
-        setupStackView(spacing: 16)
+        setupStackView(spacing: 10)
     }()
     
     private lazy var middleStackView: UIStackView = {
-        setupStackView(spacing: 16)
+        setupStackView(spacing: 10)
     }()
     
     private lazy var preMiddleStackView: UIStackView = {
-        setupStackView(spacing: 16)
+        setupStackView(spacing: 10)
     }()
     
     private lazy var zeroStack: UIStackView = {
-        setupStackView(spacing: 16)
+        setupStackView(spacing: 10)
     }()
     
     private lazy var commaEqualStackView: UIStackView = {
-        setupStackView(spacing: 16)
+        setupStackView(spacing: 10)
     }()
     
     private lazy var lowStackView: UIStackView = {
-        setupStackView(spacing: 16)
+        setupStackView(spacing: 10)
     }()
     
     private lazy var zeroButton: UIButton = {
@@ -283,12 +284,12 @@ final class CalculatorViewController: UIViewController {
         [zeroStack, commaEqualStackView] . forEach { lowStackView.addArrangedSubview($0)}
         NSLayoutConstraint.activate([
             
-            resultLabel.heightAnchor.constraint(equalToConstant: 100),
-            
-            mainStack.topAnchor.constraint(equalTo: resultLabel.bottomAnchor, constant: 10),
+        
+            mainStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             mainStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            mainStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            mainStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            mainStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            mainStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            mainStack.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
             
             zeroStack.widthAnchor.constraint(equalToConstant: 200),
         ])
@@ -310,10 +311,8 @@ extension CalculatorViewController {
     private func setupButton(title: String?) -> UIButton {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 35
-        button.clipsToBounds = true
         button.setTitle(title, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 50, weight: .medium)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 40, weight: .medium)
         button.backgroundColor = .orange
         return button
     }
