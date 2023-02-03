@@ -58,31 +58,31 @@ final class CalculatorViewController: UIViewController {
     }()
     
     private lazy var upperStackView: UIStackView = {
-        setupStackView()
+        setupStackView(spacing: 0)
     }()
     
     private lazy var preUpperStackView: UIStackView = {
-        setupStackView()
+        setupStackView(spacing: 0)
     }()
     
     private lazy var middleStackView: UIStackView = {
-        setupStackView()
+        setupStackView(spacing: 0)
     }()
     
     private lazy var preMiddleStackView: UIStackView = {
-        setupStackView()
+        setupStackView(spacing: 0)
     }()
     
     private lazy var zeroStack: UIStackView = {
-        setupStackView()
+        setupStackView(spacing: 0)
     }()
     
     private lazy var commaEqualStackView: UIStackView = {
-        setupStackView()
+        setupStackView(spacing: 10)
     }()
     
     private lazy var lowStackView: UIStackView = {
-        setupStackView()
+        setupStackView(spacing: 15)
     }()
     
     private lazy var zeroButton: UIButton = {
@@ -179,6 +179,7 @@ final class CalculatorViewController: UIViewController {
         actionPressOperationButton()
         setupLayout()
     }
+    
     
     //MARK: - Private methods
     
@@ -345,7 +346,7 @@ final class CalculatorViewController: UIViewController {
             
             zeroStack.widthAnchor.constraint(equalToConstant: 180),
             
-            commaEqualStackView.widthAnchor.constraint(equalTo: zeroStack.widthAnchor, multiplier: 1 / 1),
+            commaEqualStackView.widthAnchor.constraint(equalTo: zeroStack.widthAnchor, multiplier: 1/1),
             
             mainStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
             mainStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -358,11 +359,12 @@ final class CalculatorViewController: UIViewController {
 //MARK: - Extentions
 
 extension CalculatorViewController {
-    private func setupStackView() -> UIStackView {
+    private func setupStackView(spacing: CGFloat) -> UIStackView {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .fill
+        stackView.spacing = spacing
         stackView.distribution = .equalSpacing
         return stackView
     }
