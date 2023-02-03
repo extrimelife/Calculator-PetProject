@@ -41,6 +41,7 @@ final class CalculatorViewController: UIViewController {
         result.adjustsFontSizeToFitWidth = true
         result.minimumScaleFactor = 0.5
         result.lineBreakMode = .byWordWrapping
+        result.sizeToFit()
         result.textColor = .white
         result.font = UIFont.systemFont(ofSize: 80, weight: .light)
         return result
@@ -50,37 +51,38 @@ final class CalculatorViewController: UIViewController {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
-        stack.distribution = .fillEqually
-        stack.spacing = 10
+        stack.alignment = .fill
+        stack.distribution = .fill
+        stack.spacing = 20
         return stack
     }()
     
     private lazy var upperStackView: UIStackView = {
-        setupStackView(spacing: 10)
+        setupStackView()
     }()
     
     private lazy var preUpperStackView: UIStackView = {
-        setupStackView(spacing: 10)
+        setupStackView()
     }()
     
     private lazy var middleStackView: UIStackView = {
-        setupStackView(spacing: 10)
+        setupStackView()
     }()
     
     private lazy var preMiddleStackView: UIStackView = {
-        setupStackView(spacing: 10)
+        setupStackView()
     }()
     
     private lazy var zeroStack: UIStackView = {
-        setupStackView(spacing: 10)
+        setupStackView()
     }()
     
     private lazy var commaEqualStackView: UIStackView = {
-        setupStackView(spacing: 10)
+        setupStackView()
     }()
     
     private lazy var lowStackView: UIStackView = {
-        setupStackView(spacing: 10)
+        setupStackView()
     }()
     
     private lazy var zeroButton: UIButton = {
@@ -284,14 +286,71 @@ final class CalculatorViewController: UIViewController {
         [zeroStack, commaEqualStackView] . forEach { lowStackView.addArrangedSubview($0)}
         NSLayoutConstraint.activate([
             
-        
-            mainStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            resetButton.heightAnchor.constraint(equalToConstant: 75),
+            resetButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            negativeButton.heightAnchor.constraint(equalToConstant: 75),
+            negativeButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            percentButton.heightAnchor.constraint(equalToConstant: 75),
+            percentButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            divideButton.heightAnchor.constraint(equalToConstant: 75),
+            divideButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            sevenButton.heightAnchor.constraint(equalToConstant: 75),
+            sevenButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            eightButton.heightAnchor.constraint(equalToConstant: 75),
+            eightButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            nineButton.heightAnchor.constraint(equalToConstant: 75),
+            nineButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            multiplyButton.heightAnchor.constraint(equalToConstant: 75),
+            multiplyButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            fourButton.heightAnchor.constraint(equalToConstant: 75),
+            fourButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            fiveButton.heightAnchor.constraint(equalToConstant: 75),
+            fiveButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            sixButton.heightAnchor.constraint(equalToConstant: 75),
+            sixButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            minusButton.heightAnchor.constraint(equalToConstant: 75),
+            minusButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            oneButton.heightAnchor.constraint(equalToConstant: 75),
+            oneButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            twoButton.heightAnchor.constraint(equalToConstant: 75),
+            twoButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            threeButton.heightAnchor.constraint(equalToConstant: 75),
+            threeButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            plusButton.heightAnchor.constraint(equalToConstant: 75),
+            plusButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            dotButton.heightAnchor.constraint(equalToConstant: 75),
+            dotButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            equalButton.heightAnchor.constraint(equalToConstant: 75),
+            equalButton.widthAnchor.constraint(equalToConstant: 75),
+            
+            zeroButton.heightAnchor.constraint(equalToConstant: 75),
+
+            
+            zeroStack.widthAnchor.constraint(equalToConstant: 180),
+            
+            commaEqualStackView.widthAnchor.constraint(equalTo: zeroStack.widthAnchor, multiplier: 1 / 1),
+            
+            mainStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
             mainStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             mainStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             mainStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            mainStack.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
-            
-            zeroStack.widthAnchor.constraint(equalToConstant: 200),
         ])
     }
 }
@@ -299,18 +358,20 @@ final class CalculatorViewController: UIViewController {
 //MARK: - Extentions
 
 extension CalculatorViewController {
-    private func setupStackView(spacing: CGFloat) -> UIStackView {
+    private func setupStackView() -> UIStackView {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.spacing = spacing
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
         return stackView
     }
     
     private func setupButton(title: String?) -> UIButton {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 35
+        button.clipsToBounds = true
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 40, weight: .medium)
         button.backgroundColor = .orange
