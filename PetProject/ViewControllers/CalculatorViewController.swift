@@ -13,6 +13,7 @@ final class CalculatorViewController: UIViewController {
     
     private var isStillTyping = false
     private var isCommaPlaced = false
+    private var isScreenChanged = false
     private var firstOperand: Double = 0
     private var secondOperand: Double = 0
     private var operationSign: String?
@@ -180,6 +181,10 @@ final class CalculatorViewController: UIViewController {
         setupLayout()
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        getNewLayerButtonLandscape()
+        setupStackViewLandscape()
+    }
     
     //MARK: - Private methods
     
@@ -342,7 +347,7 @@ final class CalculatorViewController: UIViewController {
             equalButton.widthAnchor.constraint(equalToConstant: 75),
             
             zeroButton.heightAnchor.constraint(equalToConstant: 75),
-
+            
             
             zeroStack.widthAnchor.constraint(equalToConstant: 180),
             
@@ -399,7 +404,42 @@ extension CalculatorViewController {
             operationButton.addTarget(self, action: #selector(equalSignButtonPressed), for: .touchDown)
         }
     }
+    
+    private func getNewLayerButtonLandscape() {
+        let buttons = [resetButton, negativeButton, percentButton,
+                       divideButton, sevenButton, eightButton,
+                       nineButton, multiplyButton, fourButton,
+                       fiveButton, sixButton, minusButton,
+                       oneButton, twoButton, threeButton,
+                       plusButton, zeroButton, dotButton,
+                       equalButton]
+        buttons .forEach { button in
+            if UIDevice.current.orientation.isLandscape == true {
+                button.layer.cornerRadius = 15
+                button.clipsToBounds = true
+            } else {
+                button.layer.cornerRadius = 35
+                button.clipsToBounds = true
+            }
+        }
+    }
+    
+    private func setupStackViewLandscape() {
+        let stacksView = [upperStackView, preUpperStackView,
+                          middleStackView, preMiddleStackView,
+                          commaEqualStackView, lowStackView]
+        stacksView .forEach { stackView in
+            if UIDevice.current.orientation.isLandscape == true {
+                mainStack.distribution = .fillEqually
+                stackView.distribution = .fillEqually
+                stackView.spacing = 10
+            } else {
+                mainStack.distribution = .fill
+                stackView.distribution = .equalSpacing
+                stackView.spacing = 13
+            }
+        }
+    }
 }
-
 
 
