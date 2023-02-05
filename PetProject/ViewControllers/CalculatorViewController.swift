@@ -25,7 +25,7 @@ final class CalculatorViewController: UIViewController {
         set {
             let value = "\(newValue)"
             let separatorArray = value.components(separatedBy: ".")
-            if separatorArray[1] == "0" {
+            if separatorArray[0] == "0" {
                 resultLabel.text = "\(separatorArray[0])"
             } else {
                 resultLabel.text = "\(newValue)"
@@ -181,7 +181,7 @@ final class CalculatorViewController: UIViewController {
         setupLayout()
     }
     
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillLayoutSubviews() {
         getNewLayerButtonLandscape()
         setupStackViewLandscape()
     }
@@ -348,7 +348,6 @@ final class CalculatorViewController: UIViewController {
             
             zeroButton.heightAnchor.constraint(equalToConstant: 75),
             
-            
             zeroStack.widthAnchor.constraint(equalToConstant: 180),
             
             commaEqualStackView.widthAnchor.constraint(equalTo: zeroStack.widthAnchor, multiplier: 1/1),
@@ -426,16 +425,18 @@ extension CalculatorViewController {
     
     private func setupStackViewLandscape() {
         let stacksView = [upperStackView, preUpperStackView,
-                          middleStackView, preMiddleStackView,
+                          middleStackView, preMiddleStackView, zeroStack,
                           commaEqualStackView, lowStackView]
         stacksView .forEach { stackView in
             if UIDevice.current.orientation.isLandscape == true {
                 mainStack.distribution = .fillEqually
                 stackView.distribution = .fillEqually
+                stackView.alignment = .center
                 stackView.spacing = 10
             } else {
                 mainStack.distribution = .fill
                 stackView.distribution = .equalSpacing
+                stackView.alignment = .fill
                 stackView.spacing = 13
             }
         }
