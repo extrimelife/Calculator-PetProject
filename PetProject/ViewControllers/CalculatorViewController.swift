@@ -13,7 +13,6 @@ final class CalculatorViewController: UIViewController {
     
     private var isStillTyping = false
     private var isCommaPlaced = false
-    private var isScreenChanged = false
     private var firstOperand: Double = 0
     private var secondOperand: Double = 0
     private var operationSign: String?
@@ -25,7 +24,7 @@ final class CalculatorViewController: UIViewController {
         set {
             let value = "\(newValue)"
             let separatorArray = value.components(separatedBy: ".")
-            if separatorArray[0] == "0" {
+            if separatorArray[1] == "0" {
                 resultLabel.text = "\(separatorArray[0])"
             } else {
                 resultLabel.text = "\(newValue)"
@@ -56,6 +55,14 @@ final class CalculatorViewController: UIViewController {
         stack.distribution = .fill
         stack.spacing = 20
         return stack
+    }()
+    
+    private let printScientificFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .scientific
+        formatter.maximumFractionDigits = 3
+        formatter.exponentSymbol = "e"
+        return formatter
     }()
     
     private lazy var upperStackView: UIStackView = {
@@ -145,7 +152,7 @@ final class CalculatorViewController: UIViewController {
     }()
     
     private lazy var divideButton: UIButton = {
-       setupButton(title: "÷")
+        setupButton(title: "÷")
     }()
     
     private lazy var multiplyButton: UIButton = {
@@ -226,19 +233,23 @@ final class CalculatorViewController: UIViewController {
             operateWithTwoOperands{$0 + $1}
         default: break
         }
-        isCommaPlaced = false
-        sender.getAnimation()
+        if resultLabel.text?.count ?? 0 > maxLength {
+            resultLabel.text = printScientificFormatter.string(for: currentInput)
+        } else {
+            isCommaPlaced = false
+            sender.getAnimation()
+        }
     }
     
     @objc private func resetButtonPressed(sender: UIButton) {
-        firstOperand = 0
-        secondOperand = 0
-        currentInput = 0
-        resultLabel.text = "0"
-        isStillTyping = false
-        isCommaPlaced = false
-        operationSign = ""
-        sender.getAnimation()
+            firstOperand = 0
+            secondOperand = 0
+            currentInput = 0
+            resultLabel.text = "0"
+            isStillTyping = false
+            isCommaPlaced = false
+            operationSign = ""
+            sender.getAnimation()
     }
     
     @objc private func negativeButtonPressed(sender: UIButton) {
@@ -267,8 +278,8 @@ final class CalculatorViewController: UIViewController {
         }
         sender.getAnimation()
     }
-
-
+    
+    
     private func operateWithTwoOperands(operation: (Double, Double) -> Double) {
         currentInput = operation(firstOperand, secondOperand)
         isStillTyping = false
@@ -413,7 +424,7 @@ extension CalculatorViewController {
                        plusButton, zeroButton, dotButton,
                        equalButton]
         buttons .forEach { button in
-            if UIDevice.current.orientation.isLandscape == true {
+            if UIDevice.current.orientation.isLandscape {
                 button.layer.cornerRadius = 15
                 button.clipsToBounds = true
             } else {
@@ -428,7 +439,7 @@ extension CalculatorViewController {
                           middleStackView, preMiddleStackView, zeroStack,
                           commaEqualStackView, lowStackView]
         stacksView .forEach { stackView in
-            if UIDevice.current.orientation.isLandscape == true {
+            if UIDevice.current.orientation.isLandscape {
                 mainStack.distribution = .fillEqually
                 stackView.distribution = .fillEqually
                 stackView.alignment = .center
@@ -442,5 +453,6 @@ extension CalculatorViewController {
         }
     }
 }
+
 
 
