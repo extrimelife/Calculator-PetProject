@@ -188,9 +188,9 @@ final class CalculatorViewController: UIViewController {
         setupLayout()
     }
     
-    override func viewWillLayoutSubviews() {
-        getNewLayerButtonLandscape()
-        setupStackViewLandscape()
+    override func viewLayoutMarginsDidChange() {
+         getNewLayerButtonLandscape()
+         setupStackViewLandscape()
     }
     
     //MARK: - Private methods
@@ -431,6 +431,7 @@ extension CalculatorViewController {
                 button.layer.cornerRadius = 35
                 button.clipsToBounds = true
             }
+            isStillTyping = true
         }
     }
     
@@ -446,6 +447,7 @@ extension CalculatorViewController {
                 stackView.spacing = 10
             } else {
                 mainStack.distribution = .fill
+                mainStack.alignment = .fill
                 stackView.distribution = .equalSpacing
                 stackView.alignment = .fill
                 stackView.spacing = 13
