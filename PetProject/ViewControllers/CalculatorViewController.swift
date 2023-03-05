@@ -24,7 +24,7 @@ final class CalculatorViewController: UIViewController {
         set {
             let value = "\(newValue)"
             let separatorArray = value.components(separatedBy: ".")
-            if separatorArray[1] == "0" {
+            if separatorArray[1] == "0"  {
                 resultLabel.text = "\(separatorArray[0])"
             } else {
                 resultLabel.text = "\(newValue)"
@@ -189,8 +189,8 @@ final class CalculatorViewController: UIViewController {
     }
     
     override func viewLayoutMarginsDidChange() {
-         getNewLayerButtonLandscape()
-         setupStackViewLandscape()
+        getNewLayerButtonLandscape()
+        setupStackViewLandscape()
     }
     
     //MARK: - Private methods
@@ -242,14 +242,14 @@ final class CalculatorViewController: UIViewController {
     }
     
     @objc private func resetButtonPressed(sender: UIButton) {
-            firstOperand = 0
-            secondOperand = 0
-            currentInput = 0
-            resultLabel.text = "0"
-            isStillTyping = false
-            isCommaPlaced = false
-            operationSign = ""
-            sender.getAnimation()
+        firstOperand = 0
+        secondOperand = 0
+        currentInput = 0
+        resultLabel.text = "0"
+        isStillTyping = false
+        isCommaPlaced = false
+        operationSign = ""
+        sender.getAnimation()
     }
     
     @objc private func negativeButtonPressed(sender: UIButton) {
@@ -411,7 +411,6 @@ extension CalculatorViewController {
                                 minusButton, plusButton]
         operationButtons.forEach { operationButton in
             operationButton.addTarget(self, action: #selector(twoOperandButtonPressed), for: .touchUpInside)
-            operationButton.addTarget(self, action: #selector(equalSignButtonPressed), for: .touchDown)
         }
     }
     

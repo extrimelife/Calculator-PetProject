@@ -59,9 +59,6 @@
 				B715148229622FAF00002EBC /* ViewControllers */,
 				B776166D296D1F3500C0B222 /* Extentions */,
 				B715148129622FA700002EBC /* App */,
-				B715147629622E4F00002EBC /* Assets.xcassets */,
-				B715147829622E4F00002EBC /* LaunchScreen.storyboard */,
-				B715147B29622E4F00002EBC /* Info.plist */,
 			);
 			path = PetProject;
 			sourceTree = "<group>";
@@ -71,6 +68,9 @@
 			children = (
 				B715146D29622E4D00002EBC /* AppDelegate.swift */,
 				B715146F29622E4D00002EBC /* SceneDelegate.swift */,
+				B715147629622E4F00002EBC /* Assets.xcassets */,
+				B715147829622E4F00002EBC /* LaunchScreen.storyboard */,
+				B715147B29622E4F00002EBC /* Info.plist */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -303,8 +303,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VB9MN6M9R5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PetProject/Info.plist;
+				INFOPLIST_FILE = PetProject/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -329,8 +330,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VB9MN6M9R5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PetProject/Info.plist;
+				INFOPLIST_FILE = PetProject/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
