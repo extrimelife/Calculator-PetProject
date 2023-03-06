@@ -1,8 +1,8 @@
 //
-//  Extension  + UiButton.swift
+//  UIButton + Extention.swift
 //  PetProject
 //
-//  Created by roman Khilchenko on 09.01.2023.
+//  Created by roman Khilchenko on 05.03.2023.
 //
 
 import UIKit

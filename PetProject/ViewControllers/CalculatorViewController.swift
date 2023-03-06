@@ -237,6 +237,7 @@ final class CalculatorViewController: UIViewController {
             resultLabel.text = printScientificFormatter.string(for: currentInput)
         } else {
             isCommaPlaced = false
+            isStillTyping = true
             sender.getAnimation()
         }
     }
@@ -391,7 +392,7 @@ extension CalculatorViewController {
         button.clipsToBounds = true
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 40, weight: .medium)
-        button.backgroundColor = .orange
+        button.backgroundColor = .systemOrange
         return button
     }
     
