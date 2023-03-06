@@ -212,6 +212,7 @@ final class CalculatorViewController: UIViewController {
     @objc private func twoOperandButtonPressed(sender: UIButton) {
         operationSign = sender.currentTitle
         firstOperand = currentInput
+        secondOperand = currentInput
         isStillTyping = false
         isCommaPlaced = false
         sender.getAnimation()
@@ -235,9 +236,13 @@ final class CalculatorViewController: UIViewController {
         }
         if resultLabel.text?.count ?? 0 > maxLength {
             resultLabel.text = printScientificFormatter.string(for: currentInput)
+        } else if operationSign == "-" {
+            firstOperand -= secondOperand
+        } else if  operationSign == "÷" {
+            firstOperand /= secondOperand
         } else {
-            isCommaPlaced = false
             isStillTyping = true
+            isCommaPlaced = false
             sender.getAnimation()
         }
     }
