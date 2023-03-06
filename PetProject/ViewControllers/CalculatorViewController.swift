@@ -392,7 +392,7 @@ extension CalculatorViewController {
         button.clipsToBounds = true
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 40, weight: .medium)
-        button.backgroundColor = .systemOrange
+        button.backgroundColor = .orange
         return button
     }
     
