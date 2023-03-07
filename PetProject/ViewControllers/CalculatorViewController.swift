@@ -218,7 +218,6 @@ final class CalculatorViewController: UIViewController {
         sender.getAnimation()
     }
     
-    
     @objc private func equalSignButtonPressed(sender: UIButton) {
         if isStillTyping {
             secondOperand = currentInput
