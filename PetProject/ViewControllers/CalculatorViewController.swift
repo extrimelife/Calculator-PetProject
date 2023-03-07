@@ -11,6 +11,7 @@ final class CalculatorViewController: UIViewController {
     
     //MARK: - Private properties
     
+    private let signModel = Sign.getSignModel()
     private var isStillTyping = false
     private var isCommaPlaced = false
     private var firstOperand: Double = 0
@@ -36,7 +37,6 @@ final class CalculatorViewController: UIViewController {
     private let resultLabel: UILabel = {
         let result = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "0"
         result.textAlignment = .right
         result.adjustsFontSizeToFitWidth = true
         result.minimumScaleFactor = 0.5
@@ -94,87 +94,87 @@ final class CalculatorViewController: UIViewController {
     }()
     
     private lazy var zeroButton: UIButton = {
-        setupButton(title: "0")
+        setupButton()
     }()
     
     private lazy var oneButton: UIButton = {
-        setupButton(title: "1")
+        setupButton()
     }()
     
     private lazy var twoButton: UIButton = {
-        setupButton(title: "2")
+        setupButton()
     }()
     
     private lazy var threeButton: UIButton = {
-        setupButton(title: "3")
+        setupButton()
     }()
     
     private lazy var fourButton: UIButton = {
-        setupButton(title: "4")
+        setupButton()
     }()
     
     private lazy var fiveButton: UIButton = {
-        setupButton(title: "5")
+        setupButton()
     }()
     
     private lazy var sixButton: UIButton = {
-        setupButton(title: "6")
+        setupButton()
     }()
     
     private lazy var sevenButton: UIButton = {
-        setupButton(title: "7")
+        setupButton()
     }()
     
     private lazy var eightButton: UIButton = {
-        setupButton(title: "8")
+        setupButton()
     }()
     
     private lazy var nineButton: UIButton = {
-        setupButton(title: "9")
+        setupButton()
     }()
     
     private lazy var resetButton: UIButton = {
-        let resetButton = setupButton(title: "C")
+        let resetButton = setupButton()
         resetButton.addTarget(self, action: #selector(resetButtonPressed), for: .touchUpInside)
         return resetButton
     }()
     
     private lazy var negativeButton: UIButton = {
-        let negativeButton = setupButton(title: "⁺∕₋")
+        let negativeButton = setupButton()
         negativeButton.addTarget(self, action: #selector(negativeButtonPressed), for: .touchUpInside)
         return negativeButton
     }()
     
     private lazy var percentButton: UIButton = {
-        let percentButton = setupButton(title: "%")
+        let percentButton = setupButton()
         percentButton.addTarget(self, action: #selector(percentButtonPressed), for: .touchUpInside)
         return percentButton
     }()
     
     private lazy var divideButton: UIButton = {
-        setupButton(title: "÷")
+        setupButton()
     }()
     
     private lazy var multiplyButton: UIButton = {
-        setupButton(title: "×")
+        setupButton()
     }()
     
     private lazy var minusButton: UIButton = {
-        setupButton(title: "-")
+        setupButton()
     }()
     
     private lazy var plusButton: UIButton = {
-        setupButton(title: "+")
+        setupButton()
     }()
     
     private lazy var equalButton: UIButton = {
-        let equalButton = setupButton(title: "=")
+        let equalButton = setupButton()
         equalButton.addTarget(self, action: #selector(equalSignButtonPressed), for: .touchUpInside)
         return equalButton
     }()
     
     private lazy var dotButton: UIButton = {
-        let dotButton = setupButton(title: ".")
+        let dotButton = setupButton()
         dotButton.addTarget(self, action: #selector(dotButtonPressed), for: .touchUpInside)
         return dotButton
     }()
@@ -186,6 +186,7 @@ final class CalculatorViewController: UIViewController {
         actionPressNumberButton()
         actionPressOperationButton()
         setupLayout()
+        getSignModel()
     }
     
     override func viewLayoutMarginsDidChange() {
@@ -194,6 +195,29 @@ final class CalculatorViewController: UIViewController {
     }
     
     //MARK: - Private methods
+    
+    private func getSignModel() {
+        resultLabel.text = signModel.result
+        zeroButton.setTitle(signModel.zero, for: .normal)
+        oneButton.setTitle(signModel.one, for: .normal)
+        twoButton.setTitle(signModel.two, for: .normal)
+        threeButton.setTitle(signModel.three, for: .normal)
+        fourButton.setTitle(signModel.four, for: .normal)
+        fiveButton.setTitle(signModel.five, for: .normal)
+        sixButton.setTitle(signModel.six, for: .normal)
+        sevenButton.setTitle(signModel.seven, for: .normal)
+        eightButton.setTitle(signModel.eight, for: .normal)
+        nineButton.setTitle(signModel.nine, for: .normal)
+        resetButton.setTitle(signModel.reset, for: .normal)
+        negativeButton.setTitle(signModel.negativ, for: .normal)
+        percentButton.setTitle(signModel.percent, for: .normal)
+        divideButton.setTitle(signModel.divide, for: .normal)
+        multiplyButton.setTitle(signModel.multiply, for: .normal)
+        minusButton.setTitle(signModel.minus, for: .normal)
+        plusButton.setTitle(signModel.plus, for: .normal)
+        equalButton.setTitle(signModel.equal, for: .normal)
+        dotButton.setTitle(signModel.dot, for: .normal)
+    }
     
     @objc private func numberButtonPressed(sender: UIButton) {
         guard let number = sender.currentTitle else { return }
@@ -389,12 +413,11 @@ extension CalculatorViewController {
         return stackView
     }
     
-    private func setupButton(title: String?) -> UIButton {
+    private func setupButton() -> UIButton {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 35
         button.clipsToBounds = true
-        button.setTitle(title, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 40, weight: .medium)
         button.backgroundColor = .orange
         return button
